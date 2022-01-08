@@ -1,0 +1,6 @@
+DROP TABLE IF EXISTS course;
+CREATE TABLE course(
+    courseId INT NOT NULL AUTO_INCREMENT,
+    courseName VARCHAR(20) NOT NULL UNIQUE,
+    PRIMARY KEY (courseId)
+);
