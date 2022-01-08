@@ -124,6 +124,12 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.2</version>
+            </plugin>
+
             <!-- Embedded Jetty HTTP Server for testing war application -->
             <plugin>
                 <groupId>org.eclipse.jetty</groupId>
@@ -134,7 +140,7 @@
                         <contextPath>/</contextPath>
                     </webApp>
                     <httpConnector>
-                        <port>8087</port>
+                        <port>8085</port>
                     </httpConnector>
                 </configuration>
             </plugin>
