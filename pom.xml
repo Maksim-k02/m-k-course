@@ -10,11 +10,15 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>dao</module>
+
         <module>model</module>
         <module>dao-api</module>
+        <module>dao</module>
+        <module>service-api</module>
+        <module>service</module>
         <module>web-app</module>
         <module>test-db</module>
+
     </modules>
 
     <properties>
@@ -23,6 +27,12 @@
         <junit.version>5.4.0</junit.version>
         <spring.version>5.3.4</spring.version>
         <thymeleaf-spring5.version>3.0.12.RELEASE</thymeleaf-spring5.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <maven-failsafe-plugin.version>3.0.0-M5</maven-failsafe-plugin.version>
+        <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
+        <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
+        <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
+        <project.version>1.0-SNAPSHOT</project.version>
     </properties>
 
     <dependencyManagement>
@@ -30,22 +40,33 @@
             <dependency>
                 <groupId>com.epam.brest</groupId>
                 <artifactId>model</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
                 <artifactId>dao</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
                 <artifactId>dao-api</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>service-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.epam.brest</groupId>
+                <artifactId>service</artifactId>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.epam.brest</groupId>
                 <artifactId>test-db</artifactId>
-                <version>1.0-SNAPSHOT</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>
@@ -67,6 +88,11 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-tx</artifactId>
                 <version>${spring.version}</version>
             </dependency>
 
@@ -108,6 +134,13 @@
                 <scope>test</scope>
             </dependency>
 
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
@@ -119,7 +152,42 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.0.0-M5</version>
+                    <version>${maven-surefire-plugin.version}</version>
+                    <configuration>
+                        <runOrder>alphabetical</runOrder>
+                        <reportsDirectory>${junit.utReportFolder}</reportsDirectory>
+                        <excludes>
+                            <exclude>**/*IT*</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>${maven-failsafe-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <!-- Due to spring-boot repackage, without adding this property test classes are not found
+                                 See https://github.com/spring-projects/spring-boot/issues/6254 -->
+                        <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+                        <!-- Force alphabetical order to have a reproducible build -->
+                        <runOrder>alphabetical</runOrder>
+                        <reportsDirectory>${junit.itReportFolder}</reportsDirectory>
+                        <argLine>
+                            --illegal-access=permit
+                        </argLine>
+                        <includes>
+                            <include>**/*IT*</include>
+                        </includes>
+                    </configuration>
                 </plugin>
 
                 <plugin>
@@ -154,6 +222,18 @@
 
             </plugins>
         </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 
 

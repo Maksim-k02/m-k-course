@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,11 +14,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(SpringExtension.class)
 
 @ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath*:test-jdbc-conf.xml"})
-class CourseDaoJDBCImplTest {
+class CourseDaoJDBCImplIT {
 
     private CourseDaoJDBCImpl courseDaoJDBC;
 
-    public CourseDaoJDBCImplTest(@Autowired CourseDao courseDaoJDBC) {
+    public CourseDaoJDBCImplIT(@Autowired CourseDao courseDaoJDBC) {
         this.courseDaoJDBC = (CourseDaoJDBCImpl) courseDaoJDBC;
     }
 
@@ -43,7 +42,8 @@ class CourseDaoJDBCImplTest {
     void tryToCreateEqualsCourses(){
         assertNotNull(courseDaoJDBC);
         Course course = new Course("Kotlin");
-        assertThrows(DuplicateKeyException.class, ()-> {
+
+        assertThrows(DuplicateKeyException.class, () -> {
             courseDaoJDBC.create(course);
             courseDaoJDBC.create(course);
         });
