@@ -4,6 +4,18 @@ public class Course {
     private Integer courseId;
     private String courseName;
 
+    public Course() {
+    }
+
+    public Course(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public Course(Integer courseId, String courseName) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+    }
+
     public Integer getCourseId() {
         return courseId;
     }
