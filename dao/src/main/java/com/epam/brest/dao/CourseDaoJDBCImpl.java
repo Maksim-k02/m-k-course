@@ -17,11 +17,13 @@ import java.util.List;
 
 public class CourseDaoJDBCImpl implements CourseDao{
 
-    private final Logger logger = LogManager.getLogger(CourseDaoJDBCImpl.class);
+    private final Logger LOGGER = LogManager.getLogger(CourseDaoJDBCImpl.class);
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private final String SQL_ALL_COURSES="select d.course_id, d.course_name from course d order by d.course_name";
+    private final String SQL_CHECK_UNIQUE_COURSE_NAME="select count(d.course_name)" +
+            "from course d where lower(d.course_name) = lower(:courseName)";
     private final String SQL_CREATE_COURSE="insert into course(course_name) values(:courseName)";
 
     public CourseDaoJDBCImpl(DataSource dataSource){
@@ -30,19 +32,30 @@ public class CourseDaoJDBCImpl implements CourseDao{
 
     @Override
     public List<Course> findAll() {
-        logger.debug("Start: findAll()");
+        LOGGER.debug("Start: findAll()");
         return namedParameterJdbcTemplate.query(SQL_ALL_COURSES, new CourseRowMapper());
     }
 
     @Override
     public Integer create(Course course) {
-        logger.debug("Start: create({})", course);
-        //TODO: isCourseUnique throw new IllegalArgumentException
+        LOGGER.debug("Start: create({})", course);
+
+        if (!isCourseUnique((course.getCourseName()))){
+            LOGGER.warn("Course with the same name {} already exists", course.getCourseName());
+            throw new IllegalArgumentException("Course with the same name already exists in DB");
+        }
+
 
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource("courseName", course.getCourseName().toUpperCase());
         KeyHolder keyHolder =  new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(SQL_CREATE_COURSE, sqlParameterSource, keyHolder);
         return (Integer) keyHolder.getKey();
+    }
+
+    private boolean isCourseUnique(String courseName){
+        LOGGER.debug("Check CourseName: {} on unique", courseName);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("courseName", courseName);
+        return namedParameterJdbcTemplate.queryForObject(SQL_CHECK_UNIQUE_COURSE_NAME, sqlParameterSource,Integer.class) ==0;
     }
 
     @Override
