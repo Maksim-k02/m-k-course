@@ -64,21 +64,22 @@
                         <thead class="table-dark">
                         <tr>
                             <th>Title</th>
-                            <th>Avg salary</th>
+                            <th>Number of students</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>CEO</td>
-                            <td>10000</td>
+                        <tr th:each="course : ${courses}">
+                            <td th:text="${course.courseName}">CEO</td>
+                            <td th:text="${course.countStudent}">10000</td>
                             <td class="text-end">
                                 <a href="course.html"
-                                   th:href="@{/course/1}"
+                                   th:href="@{|/course/${course.courseId}|}"
                                    class="btn-sm btn-outline-secondary"
                                    title="Edit course">
                                     <i class="bi-pen"></i><span class="d-none d-md-inline">&nbsp;Edit</span></a>
-                                <span data-bs-toggle="modal" data-bs-target="#deleteDialog">
+                                <span data-bs-toggle="modal" data-bs-target="#deleteDialog"
+                                      th:attr="data-id=${course.courseId},data-name=${course.courseName}">
                                     <a href="#" class="btn-sm btn-outline-secondary"
                                        title="delete course"><i class="bi-x"></i><span
                                             class="d-none d-md-inline">&nbsp;Delete</span>
@@ -86,7 +87,7 @@
                                 </span>
                             </td>
                         </tr>
-                        <tr>
+                        <tr th:remove="all">
                             <td>Accounting</td>
                             <td>2500</td>
                             <td class="text-end">
@@ -103,7 +104,7 @@
                                 </span>
                             </td>
                         </tr>
-                        <tr>
+                        <tr th:remove="all">
                             <td>Development</td>
                             <td>1150</td>
                             <td class="text-end">
@@ -120,7 +121,7 @@
                                 </span>
                             </td>
                         </tr>
-                        <tr>
+                        <tr th:remove="all">
                             <td>Java</td>
                             <td>1500</td>
                             <td class="text-end">
@@ -137,7 +138,7 @@
                                 </span>
                             </td>
                         </tr>
-                        <tr>
+                        <tr th:remove="all">
                             <td>Testing</td>
                             <td>1100</td>
                             <td class="text-end">
@@ -154,7 +155,7 @@
                                 </span>
                             </td>
                         </tr>
-                        <tr>
+                        <tr th:remove="all">
                             <td>People management</td>
                             <td>800</td>
                             <td class="text-end">
