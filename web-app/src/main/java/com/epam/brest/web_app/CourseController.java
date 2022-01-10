@@ -16,7 +16,7 @@ public class CourseController {
     }
 
     /**
-     * Goto edit department page.
+     * Goto edit course page.
      *
      * @return view name
      */
@@ -26,7 +26,7 @@ public class CourseController {
     }
 
     /**
-     * Goto new department page.
+     * Goto new course page.
      *
      * @return view name
      */

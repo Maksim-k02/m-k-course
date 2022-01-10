@@ -4,7 +4,7 @@ import com.epam.brest.model.dto.CourseDto;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.util.Collections;
+
 import java.util.List;
 
 public class CourseDtoDaoJdbc implements CourseDtoDao{

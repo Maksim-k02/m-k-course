@@ -5,15 +5,15 @@ import com.epam.brest.model.dto.CourseDto;
 import java.util.List;
 
 /**
- * DepartmentDto DAO Interface.
+ * CourseDto DAO Interface.
  */
 
 public interface CourseDtoDao {
 
     /**
-     * Get all departments with avg salary by department.
+     * Get all courses with count student by course.
      *
-     * @return departments list.
+     * @return courses list.
      */
     List<CourseDto> findAllWithCountStudent();
 }
