@@ -30,6 +30,10 @@ public class CourseDaoJDBCImpl implements CourseDao{
         this.namedParameterJdbcTemplate= new NamedParameterJdbcTemplate(dataSource);
     }
 
+    public CourseDaoJDBCImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate){
+        this.namedParameterJdbcTemplate= namedParameterJdbcTemplate;
+    }
+
     @Override
     public List<Course> findAll() {
         LOGGER.debug("Start: findAll()");
@@ -66,6 +70,12 @@ public class CourseDaoJDBCImpl implements CourseDao{
     @Override
     public Integer delete(Integer courseId) {
         return null;
+    }
+
+    @Override
+    public Integer count() {
+        LOGGER.debug("count()");
+        return namedParameterJdbcTemplate.queryForObject("select count(*) from course", new MapSqlParameterSource(), Integer.class);
     }
 
     private class CourseRowMapper implements RowMapper<Course>{

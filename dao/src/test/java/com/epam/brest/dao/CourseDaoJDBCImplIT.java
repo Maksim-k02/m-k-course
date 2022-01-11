@@ -39,11 +39,11 @@ class CourseDaoJDBCImplIT {
     @Test
     void create(){
         assertNotNull(courseDaoJDBC);
-        int courseSizeBefore = courseDaoJDBC.findAll().size();
+        int courseSizeBefore = courseDaoJDBC.count();
         Course course = new Course("Payton");
         Integer newCourseId = courseDaoJDBC.create(course);
         assertNotNull(newCourseId);
-        assertEquals((int) courseSizeBefore, courseDaoJDBC.findAll().size() - 1);
+        assertEquals((int) courseSizeBefore, courseDaoJDBC.count() - 1);
     }
 
     @Test
@@ -55,5 +55,14 @@ class CourseDaoJDBCImplIT {
             courseDaoJDBC.create(course);
             courseDaoJDBC.create(course);
         });
+    }
+
+    @Test
+    void shouldCount(){
+        assertNotNull(courseDaoJDBC);
+        Integer quantity = courseDaoJDBC.count();
+        assertNotNull(quantity);
+        assertTrue(quantity > 0);
+        assertEquals(Integer.valueOf(3),quantity);
     }
 }

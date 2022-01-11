@@ -9,4 +9,5 @@ public interface CourseDao {
     Integer create(Course course);
     Integer update(Course course);
     Integer delete(Integer courseId);
+    Integer count();
 }
