@@ -22,7 +22,7 @@
             </button>
             <a href="/" class="navbar-brand"><img src="../../resources/static/img/logo.svg"
                                                   th:src="@{/resources/static/img/logo.svg}"
-                                                  height="32" width="32" alt="HR"></a>
+                                                  height="32" width="32" alt="course"></a>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -47,7 +47,8 @@
                     <i class="bi-arrow-left"></i></a>
             </li>
         </ul>
-        <span class="navbar-brand text-uppercase me-auto">Edit course</span>
+        <span class="navbar-brand text-uppercase me-auto"
+              th:text="${isNew} ? 'New course' : 'Edit course'">Edit course</span>
     </nav>
 </header>
 
@@ -57,13 +58,23 @@
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <form>
+                        <form id="courseForm"
+                              th:object="${course}"
+                              action="courses.html"
+                              th:action="@{${#httpServletRequest.servletPath}}"
+                              th:method="@{post}">
+
+                            <input id="field_courseId"
+                                   type="hidden"
+                                   th:field="*{courseId}"/>
+
                             <div class="mb-3">
                                 <label class="form-label"
                                        for="field_courseName">Course Name</label>
                                 <input class="form-control "
                                        id="field_courseName"
-                                       type="text" value="CEO"/>
+                                       type="text" value="CEO"
+                                       th:field="*{courseName}"/>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label"
@@ -79,6 +90,7 @@
                                    title="Cancel">Cancel</a>
                                 <a href="courses.html"
                                    th:href="@{/courses}"
+                                   th:onclick="@{document.forms['courseForm'].submit(); return false;}"
                                    class="btn btn-primary"
                                    title="Save course">Save</a>
                             </div>
