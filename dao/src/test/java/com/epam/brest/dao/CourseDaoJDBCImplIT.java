@@ -12,6 +12,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -55,6 +57,41 @@ class CourseDaoJDBCImplIT {
             courseDaoJDBC.create(course);
             courseDaoJDBC.create(course);
         });
+    }
+
+    @Test
+    void getCourseById(){
+        List<Course> courses = courseDaoJDBC.findAll();
+        if (courses.size() == 0){
+            courseDaoJDBC.create(new Course("TEST COURSE"));
+            courses = courseDaoJDBC.findAll();
+        }
+        Course courseSrc = courses.get(0);
+        Course courseDts = courseDaoJDBC.getCourseById(courseSrc.getCourseId());
+        assertEquals(courseSrc.getCourseName(), courseDts.getCourseName());
+    }
+
+    @Test
+    void updateCourse(){
+        List<Course> courses = courseDaoJDBC.findAll();
+        if (courses.size() == 0){
+            courseDaoJDBC.create(new Course("TEST COURSE"));
+            courses = courseDaoJDBC.findAll();
+        }
+        Course courseSrc = courses.get(0);
+        courseSrc.setCourseName(courseSrc.getCourseName() + "_TEST");
+        courseDaoJDBC.update(courseSrc);
+
+        Course courseDts = courseDaoJDBC.getCourseById(courseSrc.getCourseId());
+        assertEquals(courseSrc.getCourseName(), courseDts.getCourseName());
+    }
+
+    @Test
+    void deleteCourse(){
+        courseDaoJDBC.create(new Course("TEST COURSE"));
+        List<Course> courses = courseDaoJDBC.findAll();
+        courseDaoJDBC.delete(courses.get(courses.size()-1).getCourseId());
+        assertEquals(courses.size()-1, courseDaoJDBC.findAll().size());
     }
 
     @Test

@@ -21,10 +21,17 @@ public class CourseDaoJDBCImpl implements CourseDao{
 
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private final String SQL_ALL_COURSES="select d.course_id, d.course_name from course d order by d.course_name";
-    private final String SQL_CHECK_UNIQUE_COURSE_NAME="select count(d.course_name)" +
+    public static final String SELECT_COUNT_FROM_COURSE = "select count(*) from course";
+
+    private final String SQL_COURSE_BY_ID = "select d.course_id, d.course_name from course d " +
+            " where course_id = :courseId";
+    private final String SQL_ALL_COURSES = "select d.course_id, d.course_name from course d order by d.course_name";
+    private final String SQL_CHECK_UNIQUE_COURSE_NAME = "select count(d.course_name)" +
             "from course d where lower(d.course_name) = lower(:courseName)";
-    private final String SQL_CREATE_COURSE="insert into course(course_name) values(:courseName)";
+    private final String SQL_CREATE_COURSE = "insert into course(course_name) values(:courseName)";
+    private final String SQL_UPDATE_COURSE_NAME = "update course set course_name = :courseName " +
+            "where course_id = :courseId";
+    private final String SQL_DELETE_COURSE_BY_ID = "delete from course where course_id = :courseId";
 
     public CourseDaoJDBCImpl(DataSource dataSource){
         this.namedParameterJdbcTemplate= new NamedParameterJdbcTemplate(dataSource);
@@ -38,6 +45,13 @@ public class CourseDaoJDBCImpl implements CourseDao{
     public List<Course> findAll() {
         LOGGER.debug("Start: findAll()");
         return namedParameterJdbcTemplate.query(SQL_ALL_COURSES, new CourseRowMapper());
+    }
+
+    @Override
+    public Course getCourseById(Integer courseId) {
+        LOGGER.debug("Get course by id = {}", courseId);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("courseId", courseId);
+        return namedParameterJdbcTemplate.queryForObject(SQL_COURSE_BY_ID, sqlParameterSource, new CourseRowMapper());
     }
 
     @Override
@@ -64,18 +78,22 @@ public class CourseDaoJDBCImpl implements CourseDao{
 
     @Override
     public Integer update(Course course) {
-        return null;
+        LOGGER.debug("Update course: {}", course);
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("courseName", course.getCourseName())
+                .addValue("courseId",course.getCourseId());
+        return namedParameterJdbcTemplate.update(SQL_UPDATE_COURSE_NAME, sqlParameterSource);
     }
 
     @Override
     public Integer delete(Integer courseId) {
-        return null;
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource("courseId", courseId);
+        return namedParameterJdbcTemplate.update(SQL_DELETE_COURSE_BY_ID, sqlParameterSource);
     }
 
     @Override
     public Integer count() {
         LOGGER.debug("count()");
-        return namedParameterJdbcTemplate.queryForObject("select count(*) from course", new MapSqlParameterSource(), Integer.class);
+        return namedParameterJdbcTemplate.queryForObject(SELECT_COUNT_FROM_COURSE, new MapSqlParameterSource(), Integer.class);
     }
 
     private class CourseRowMapper implements RowMapper<Course>{
