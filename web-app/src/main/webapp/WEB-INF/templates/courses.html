@@ -207,6 +207,15 @@
 
 <script src="../../resources/static/js/bootstrap.bundle.min.js"
         th:href="@{/resources/static/js/bootstrap.bundle.min.js}"></script>
+<script src="../../resources/static/js/jquery-3.4.1.slim.min.js"
+        th:src="@{/resources/static/js/jquery-3.4.1.slim.min.js}"></script>
+<script>
+    $('#deleteDialog').on('show.bs.modal', function (event) {
+        var target = $(event.relatedTarget)
+        $(this).find('.modal-body').text('Please confirm delete course: "' + target.data('name') + '"')
+        document.getElementById('deleteUrl').href = '/course/' + target.data('id') + '/delete';
+    })
+</script>
 
 </body>
 </html>

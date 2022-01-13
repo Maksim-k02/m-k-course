@@ -41,7 +41,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Integer delete(Integer courseId) {
-        return null;
+        logger.debug("delete course with id = {}", courseId);
+        return this.courseDao.delete(courseId);
     }
 
     @Override

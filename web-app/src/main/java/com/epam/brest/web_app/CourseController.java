@@ -91,4 +91,17 @@ public class CourseController {
         this.courseService.update(course);
         return "redirect:/courses";
     }
+
+    /**
+     * Delete course.
+     *
+     * @return view name
+     */
+    @GetMapping(value = "/course/{id}/delete")
+    public final String deleteCourseById(@PathVariable Integer id, Model model) {
+
+        logger.debug("delete({},{})", id, model);
+        courseService.delete(id);
+        return "redirect:/courses";
+    }
 }
