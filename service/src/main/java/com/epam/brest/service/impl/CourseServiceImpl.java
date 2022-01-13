@@ -3,6 +3,7 @@ package com.epam.brest.service.impl;
 import com.epam.brest.dao.CourseDao;
 import com.epam.brest.model.Course;
 import com.epam.brest.service.CourseService;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
@@ -20,10 +21,27 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public Course getCourseById(Integer courseId) {
+        logger.debug("Get course by id = {}", courseId);
+        return this.courseDao.getCourseById(courseId);
+    }
+
+    @Override
     @Transactional
     public Integer create(Course course) {
         logger.debug("create({})", course);
         return this.courseDao.create(course);
+    }
+
+    @Override
+    public Integer update(Course course) {
+        logger.debug("update({})", course);
+        return this.courseDao.update(course);
+    }
+
+    @Override
+    public Integer delete(Integer courseId) {
+        return null;
     }
 
     @Override

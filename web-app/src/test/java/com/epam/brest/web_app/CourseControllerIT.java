@@ -2,6 +2,7 @@ package com.epam.brest.web_app;
 
 import com.epam.brest.model.Course;
 import com.epam.brest.service.CourseService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
 
+import static com.epam.brest.model.constants.CourseConstants.COURSE_NAME_SIZE;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
@@ -104,5 +106,37 @@ class CourseControllerIT {
         ;
 
         assertEquals(courseSizeBefore, courseService.count() - 1);
+    }
+
+    @Test
+    public void shouldOpenEditCoursePageId() throws Exception {
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/course/1"))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().contentType("text/html;charset=UTF-8"))
+                .andExpect(view().name("course"))
+                .andExpect(model().attribute("isNew", is(false)))
+                .andExpect(model().attribute("course",hasProperty("courseId",is(1))))
+                .andExpect(model().attribute("course",hasProperty("courseName", is("Java"))));
+
+    }
+
+    @Test
+    public void shouldUpdateCourseAfterEdit() throws Exception {
+
+        String testName = RandomStringUtils.randomAlphabetic(COURSE_NAME_SIZE);
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post("/course/1")
+                                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                                .param("courseId", "1")
+                                .param("courseName", testName)
+                ).andExpect(status().isFound())
+                .andExpect(view().name("redirect:/courses"))
+                .andExpect(redirectedUrl("/courses"));
+
+        Course course = courseService.getCourseById(1);
+        assertNotNull(course);
+        assertEquals(testName, course.getCourseName());
     }
 }

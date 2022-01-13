@@ -35,6 +35,7 @@
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <project.version>1.0-SNAPSHOT</project.version>
         <hamcrest.version>1.3</hamcrest.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
     </properties>
 
     <dependencyManagement>
@@ -141,6 +142,15 @@
                 <version>2.0.206</version>
             </dependency>
 <!--TEST-->
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
@@ -235,7 +245,7 @@
                             <contextPath>/</contextPath>
                         </webApp>
                         <httpConnector>
-                            <port>8085</port>
+                            <port>8086</port>
                         </httpConnector>
                     </configuration>
                 </plugin>

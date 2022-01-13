@@ -10,7 +10,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"classpath*:test-db.xml", "classpath*:service-context-test.xml"})
@@ -42,13 +45,13 @@ class CourseServiceImplIT {
         Course course = new Course("Payton");
         Integer newCourseId = courseService.create(course);
         assertNotNull(newCourseId);
-        assertEquals(courseSizeBefore, courseService.count() - 1);
+        assertEquals(courseSizeBefore, courseService.count()-1);
     }
 
     @Test
     void tryToCreateEqualsCourses(){
         assertNotNull(courseService);
-        Course course = new Course("Kotlin");
+        Course course = new Course("Payton");
 
         assertThrows(IllegalArgumentException.class, () -> {
             courseService.create(course);

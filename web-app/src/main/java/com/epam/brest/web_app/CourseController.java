@@ -45,6 +45,9 @@ public class CourseController {
      */
     @GetMapping(value = "/course/{id}")
     public final String gotoEditCoursePage(@PathVariable Integer id, Model model) {
+        logger.debug("gotoEditCoursePage(id:{}, model:{})", id, model);
+        model.addAttribute("isNew", false);
+        model.addAttribute("course", courseService.getCourseById(id));
         return "course";
     }
 
@@ -72,6 +75,20 @@ public class CourseController {
 
         logger.debug("addCourse({}, {})", course);
         this.courseService.create(course);
+        return "redirect:/courses";
+    }
+
+    /**
+     * Update course.
+     *
+     * @param course course with filled data.
+     * @return view name
+     */
+    @PostMapping(value = "/course/{id}")
+    public String updateCourse(Course course) {
+
+        logger.debug("updateCourse({}, {})", course);
+        this.courseService.update(course);
         return "redirect:/courses";
     }
 }
