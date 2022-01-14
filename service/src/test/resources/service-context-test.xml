@@ -23,4 +23,13 @@
     <bean id="courseService" class="com.epam.brest.service.impl.CourseServiceImpl">
         <constructor-arg name="courseDao" ref="courseDao"/>
     </bean>
+
+    <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath*:test-db.properties</value>
+                <value>classpath*:sql-course.properties</value>
+            </list>
+        </property>
+    </bean>
 </beans>
