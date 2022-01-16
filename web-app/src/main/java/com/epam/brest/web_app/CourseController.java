@@ -3,10 +3,12 @@ package com.epam.brest.web_app;
 import com.epam.brest.model.Course;
 import com.epam.brest.service.CourseDtoService;
 import com.epam.brest.service.CourseService;
+import com.epam.brest.web_app.validators.CourseValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,10 +22,13 @@ public class CourseController {
 
     private final CourseService courseService;
 
+    private final CourseValidator courseValidator;
+
     public CourseController(CourseDtoService courseDtoService,
-                            CourseService courseService) {
+                            CourseService courseService, CourseValidator courseValidator) {
         this.courseDtoService = courseDtoService;
         this.courseService = courseService;
+        this.courseValidator = courseValidator;
     }
 
     /**
@@ -71,9 +76,13 @@ public class CourseController {
      * @return view name
      */
     @PostMapping(value = "/course")
-    public String addCourse(Course course) {
+    public String addCourse(Course course, BindingResult result) {
 
         logger.debug("addCourse({}, {})", course);
+        courseValidator.validate(course, result);
+        if (result.hasErrors()){
+            return "course";
+        }
         this.courseService.create(course);
         return "redirect:/courses";
     }

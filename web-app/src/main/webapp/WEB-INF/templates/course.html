@@ -64,6 +64,11 @@
                               th:action="@{${#httpServletRequest.servletPath}}"
                               th:method="@{post}">
 
+
+                            <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                                <p>Please fix errors below:</p>
+                            </div>
+
                             <input id="field_courseId"
                                    type="hidden"
                                    th:field="*{courseId}"/>
@@ -75,6 +80,9 @@
                                        id="field_courseName"
                                        type="text" value="CEO"
                                        th:field="*{courseName}"/>
+                                <div th:if="${#fields.hasErrors('courseName')}"
+                                     class="text-danger"
+                                     th:errors="*{courseName}">[errors]</div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label"

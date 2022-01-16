@@ -110,6 +110,25 @@ class CourseControllerIT {
     }
 
     @Test
+    void shouldFailAddCourseOnEmptyName() throws Exception {
+        // WHEN
+
+        Course course = new Course("");
+
+        //THEN
+        //Integer newCourseId = courseService.create(course)
+        mockMvc.perform(
+                        MockMvcRequestBuilders.post("/course")
+                                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                                .param("courseName", course.getCourseName())
+                ).andDo(MockMvcResultHandlers.print())
+                .andExpect(status().isOk())
+                .andExpect(view().name("course"))
+                .andExpect(model().attributeHasFieldErrors("course","courseName"));
+
+    }
+
+    @Test
     public void shouldOpenEditCoursePageId() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/course/1"))
