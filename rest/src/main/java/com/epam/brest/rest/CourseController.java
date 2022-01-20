@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 
-
 @RestController
 public class CourseController {
 
@@ -25,11 +24,19 @@ public class CourseController {
         this.courseService = courseService;
     }
 
+    @GetMapping(value = "/courses")
+    public final Collection<Course> courses() {
+
+        LOGGER.debug("courses()");
+        return courseService.findAll();
+    }
+
     @GetMapping(value = "/courses/{id}")
     public final Course getCourseById(@PathVariable Integer id){
 
-        LOGGER.debug("course()");
-        return courseService.getCourseById(id);
+        LOGGER.debug("getCourseById({})", id);
+        Course course = courseService.getCourseById(id);
+        return course;
     }
 
     @PostMapping(path = "/courses", consumes = "application/json", produces = "application/json")

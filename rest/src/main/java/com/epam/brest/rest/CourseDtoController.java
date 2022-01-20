@@ -8,7 +8,7 @@ import com.epam.brest.service.CourseService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
@@ -23,10 +23,16 @@ public class CourseDtoController {
         this.courseDtoService = courseDtoService;
     }
 
-    @GetMapping(value = "/courses_dto")
-    public final Collection<CourseDto> getCourseById(@PathVariable Integer id){
+    /**
+     * Get course Dtos.
+     *
+     * @return Course Dtos collection.
+     */
 
-        LOGGER.debug("course()");
+    @GetMapping(value = "/course_dtos")
+    public final Collection<CourseDto> courseDtos() {
+
+        LOGGER.debug("courseDtos()");
         return courseDtoService.findAllWithCountStudent();
     }
 }

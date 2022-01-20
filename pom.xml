@@ -50,6 +50,8 @@
         <jacoco.ut.execution.data.file>${project.build.directory}/coverage-reports/jacoco-ut.exec
         </jacoco.ut.execution.data.file>
         <jackson.version>2.13.1</jackson.version>
+        <json-path.version>2.0.0</json-path.version>
+
     </properties>
 
     <dependencyManagement>
@@ -207,6 +209,13 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-junit-jupiter</artifactId>
                 <version>${mockito.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.jayway.jsonpath</groupId>
+                <artifactId>json-path</artifactId>
+                <version>${json-path.version}</version>
                 <scope>test</scope>
             </dependency>
 
