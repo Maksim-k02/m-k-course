@@ -26,10 +26,12 @@
         <dependency>
             <groupId>com.epam.brest</groupId>
             <artifactId>service</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.epam.brest</groupId>
             <artifactId>test-db</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.epam.brest</groupId>
@@ -38,14 +40,20 @@
         <dependency>
             <groupId>com.epam.brest</groupId>
             <artifactId>dao-api</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.epam.brest</groupId>
             <artifactId>dao</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.epam.brest</groupId>
             <artifactId>service-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.epam.brest</groupId>
+            <artifactId>service-rest</artifactId>
         </dependency>
 
         <dependency>
@@ -108,7 +116,7 @@
                         <contextPath>/</contextPath>
                     </webApp>
                     <httpConnector>
-                        <port>8086</port>
+                        <port>8081</port>
                     </httpConnector>
                 </configuration>
             </plugin>

@@ -16,7 +16,7 @@ import java.util.Collection;
 @RestController
 public class CourseController {
 
-    private static final Logger LOGGER = LogManager.getLogger(CourseDaoJDBCImpl.class);
+    private static final Logger logger = LogManager.getLogger(CourseDaoJDBCImpl.class);
 
     private final CourseService courseService;
 
@@ -27,14 +27,14 @@ public class CourseController {
     @GetMapping(value = "/courses")
     public final Collection<Course> courses() {
 
-        LOGGER.debug("courses()");
+        logger.debug("courses()");
         return courseService.findAll();
     }
 
     @GetMapping(value = "/courses/{id}")
     public final Course getCourseById(@PathVariable Integer id){
 
-        LOGGER.debug("getCourseById({})", id);
+        logger.debug("getCourseById({})", id);
         Course course = courseService.getCourseById(id);
         return course;
     }
@@ -42,7 +42,7 @@ public class CourseController {
     @PostMapping(path = "/courses", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Integer> createCourse(@RequestBody Course course) {
 
-        LOGGER.debug("createCourse({})", course);
+        logger.debug("createCourse({})", course);
         Integer id = courseService.create(course);
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
@@ -50,7 +50,7 @@ public class CourseController {
     @PutMapping(value = "/courses", consumes = {"application/json"}, produces = {"application/json"})
     public ResponseEntity<Integer> updateCourse(@RequestBody Course course) {
 
-        LOGGER.debug("updateCourse({})", course);
+        logger.debug("updateCourse({})", course);
         int result = courseService.update(course);
         return new ResponseEntity(result, HttpStatus.OK);
     }
