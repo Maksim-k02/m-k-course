@@ -20,16 +20,18 @@ public class Course {
         return courseId;
     }
 
-    public void setCourseId(Integer courseId) {
+    public Course setCourseId(Integer courseId) {
         this.courseId = courseId;
+        return this;
     }
 
     public String getCourseName() {
         return courseName;
     }
 
-    public void setCourseName(String courseName) {
+    public Course setCourseName(String courseName) {
         this.courseName = courseName;
+        return this;
     }
 
     @Override

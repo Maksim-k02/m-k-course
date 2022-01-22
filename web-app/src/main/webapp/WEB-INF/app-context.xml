@@ -19,33 +19,53 @@
     <!-- Component scan for @Controller, @Service... annotations -->
     <context:component-scan base-package="com.epam.brest.*"/>
 
-    <import resource="classpath*:test-db.xml"/>
+<!--    <import resource="classpath*:test-db.xml"/>-->
 
-    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
-        <constructor-arg ref="dataSource"/>
+<!--    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">-->
+<!--        <constructor-arg ref="dataSource"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="courseDtoDao" class="com.epam.brest.dao.CourseDtoDaoJdbc">-->
+<!--        <constructor-arg ref="namedParameterJdbcTemplate"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="courseDtoService" class="com.epam.brest.service.impl.CourseDtoServiceImpl">-->
+<!--        <constructor-arg name="courseDtoDao" ref="courseDtoDao"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="courseDao" class="com.epam.brest.dao.CourseDaoJDBCImpl">-->
+<!--        <constructor-arg ref="namedParameterJdbcTemplate"/>-->
+<!--    </bean>-->
+
+<!--    <bean id="courseService" class="com.epam.brest.service.impl.CourseServiceImpl">-->
+<!--        <constructor-arg name="courseDao" ref="courseDao"/>-->
+<!--    </bean>-->
+
+    <bean id="courseService" class="com.epam.brest.service.rest.CourseServiceRest">
+        <constructor-arg index="0" value="${protocol}://${host}:${port}/${point.courses}"/>
+        <constructor-arg index="1" ref="restTemplate"/>
     </bean>
 
-    <bean id="courseDtoDao" class="com.epam.brest.dao.CourseDtoDaoJdbc">
-        <constructor-arg ref="namedParameterJdbcTemplate"/>
+    <bean id="courseDtoService" class="com.epam.brest.service.rest.CourseDtoServiceRest">
+        <constructor-arg index="0" value="${protocol}://${host}:${port}/${point.course_dtos}"/>
+        <constructor-arg index="1" ref="restTemplate"/>
     </bean>
 
-    <bean id="courseDtoService" class="com.epam.brest.service.impl.CourseDtoServiceImpl">
-        <constructor-arg name="courseDtoDao" ref="courseDtoDao"/>
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+            </list>
+        </property>
     </bean>
 
-    <bean id="courseDao" class="com.epam.brest.dao.CourseDaoJDBCImpl">
-        <constructor-arg ref="namedParameterJdbcTemplate"/>
-    </bean>
-
-    <bean id="courseService" class="com.epam.brest.service.impl.CourseServiceImpl">
-        <constructor-arg name="courseDao" ref="courseDao"/>
-    </bean>
 
     <bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath*:test-db.properties</value>
-                <value>classpath*:sql-course.properties</value>
+                <value>classpath:application.properties</value>
+<!--                <value>classpath*:test-db.properties</value>-->
+<!--                <value>classpath*:sql-course.properties</value>-->
             </list>
         </property>
     </bean>
